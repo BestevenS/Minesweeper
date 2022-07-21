@@ -77,6 +77,6 @@ public class Cell extends JButton implements ActionListener{
 
     public void cellOpen(){
         imageSetter(this.content);
-//        setEnabled(false);
+        setEnabled(false);
     }
 }
