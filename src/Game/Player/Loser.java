@@ -32,4 +32,4 @@ public class Loser extends JDialog {
         panel.add(score3);
         add(panel);
     }
-}
+} 

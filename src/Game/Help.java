@@ -23,4 +23,4 @@ public class Help extends JDialog {
         panel.add(creator);
         add(panel);
     }
-}
+} 

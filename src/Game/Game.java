@@ -2,62 +2,78 @@ package Game;
 
 import javax.swing.*;
 
-import Game.Player.*;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
 
-import static java.lang.Integer.parseInt;
 //import java.util.Timer;
 
 public class Game extends JFrame{
+    private JMenuBar mb;
 
+    private String smileIcon = "img/smile.png";
     //  private Timer timer;
 
-    private int rows, columns, numberOfMines;
+    private int rows, columns, numberOfMines;//timer;
+
+    //  allMyStatics
+    private static Game game;
+
+    private static int curMineNum = 0, curLives = 2;
+
     private String dif;
-    private Cell[][] cells;
 
-    private JPanel mainPanel, gamePanel, infoPanel;
+    private static Cell[][] cell;
 
-    private JLabel timerLabel, mineNum, lives;
+    private JPanel mainPanel, GPanel, infoPanel;
+
+    private JLabel timerLabel;
+
+    private static JLabel mineNumLabel, livesLabel;
+
+    private JButton restart;
 
     public Game(String dif){
-//        timer = new Timer();
+    //  timer = new Timer();
         this.dif = dif;
-        setTitle(dif);
         
-        //  Set numbers for rows, columns and Mines for every difficulty
-        setDiffVars();
+        setTitle(dif);
+
+        //  Setting the number of rows, columns and Mines
+        setDif();
 
         Components();
 
-        //  Initialize all cells
-        cellsInitializer();
+        //  Create and add cells in GPanel
+        cellsCreatorAdd();
 
         indexContent();
     }
 
-    private void indexContent(){
-        //  Add random Mines
-        randomMinesPositionSetter();
-        
-        //  Set content of every non-Mine cell
-        contentSetterNonMineCells();
-        
-    }
-
-    private void visibleMenu(){
-        setVisible(false);
-        new Menu().setVisible(true);
-    }
-
     private void Components(){
-        panelCreator();
+        mainPanel = new JPanel(new BorderLayout(2,1));
+        infoPanel = new JPanel(new FlowLayout());
+        GPanel = new JPanel(new GridLayout(rows, columns));
+        mb = new JMenuBar();
+        setJMenuBar(mb);
+        JButton newGame = new JButton("New Game");
+        mb.add(newGame);
+        newGame.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                visibleMenu();
+            }
+        });
 
-        menubarCreator();
+        JButton help = new JButton("Help");
+        mb.add(help);
+        help.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                help();
+            }
+        });
 
         addMethod();
 
@@ -68,6 +84,16 @@ public class Game extends JFrame{
         setResizable(false);
     }
 
+    private void indexContent(){
+        setMinesPlaces();
+        setNonMinedCellContent();
+    }
+
+    private void visibleMenu(){
+        setVisible(false);
+        new Menu().setVisible(true);
+    }
+
     private void help(){
         new Help().setVisible(true);
     }
@@ -76,19 +102,204 @@ public class Game extends JFrame{
         infoAdd();
         add(mainPanel);
         mainPanel.add(infoPanel, BorderLayout.NORTH);
-        mainPanel.add(gamePanel, BorderLayout.SOUTH);
+        mainPanel.add(GPanel, BorderLayout.SOUTH);
     }
 
     private void infoAdd(){
         timerLabel = new JLabel("0");
         
-        mineNum = new JLabel(String.valueOf(numberOfMines));
-        lives = new JLabel("2");
+        restart = new JButton();
+        restart.setIcon(new ImageIcon(getClass().getResource(smileIcon)));
+        restart.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                newGame();
+                //  new Game(rows, columns, numberOfMines);
+            }
+        });
+
+        Game.curMineNum = numberOfMines;
+
+        mineNumLabel = new JLabel(String.valueOf(Game.curMineNum));
+
+        livesLabel = new JLabel(String.valueOf(Game.curLives));
 
         infoPanel.add(timerLabel);
-        infoPanel.add(mineNum);
-        infoPanel.add(lives);
+        infoPanel.add(restart);
+        infoPanel.add(mineNumLabel);
+        infoPanel.add(livesLabel);
     }
+
+    // private boolean rightCellsMarked(){
+    //     int f = 0;
+    //     for(int i = 0; i<rows; i++){
+    //         for(int j = 0; j<columns; j++){
+    //             if (cell[i][j].getFlagged()) {
+    //                 f++;
+    //             }
+    //         }
+    //     }
+
+    //     if(numberOfMines == f)
+    //         return true;
+    //     else
+    //         return false;
+    // }
+
+    // private boolean rightCellsOpened(){
+    //     int f = 0;
+    //     for(int i = 0; i<rows; i++){
+    //         for(int j = 0; j<columns; j++){
+    //             System.out.println(cell[i][j].getContent());
+    //             if (!cell[i][j].getFlagged() && cell[i][j].getContent() != "mined") {
+    //                 f++;
+    //                 System.out.println(f);
+    //             }
+    //         }
+    //     }
+    //     System.out.println(columns + " * " + rows + " == " + f + " + " + numberOfMines);
+    //     System.out.println((columns * rows) == f + numberOfMines);
+    //     if((columns * rows) == f + numberOfMines)
+    //         return true;
+    //     else return false;
+    // }
+
+    // private void win(){
+    //     new Winner().setVisible(true);
+    // }
+
+    // private void lose(){
+    //     new Loser().setVisible(true);
+    // }
+
+    public void gameOver(){
+        System.out.println("You loose!");
+    }
+
+    private void setDif(){
+        if(this.dif == "beginner") {
+            this.rows = 9;
+            this.columns = 9;
+            this.numberOfMines = 10;
+        }
+
+        else if(this.dif == "intermediate") {
+            this.rows = 16;
+            this.columns = 16;
+            this.numberOfMines = 30;
+        }
+
+        else if(this.dif == "expert") {
+            this.rows = 16;
+            this.columns = 30;
+            this.numberOfMines = 50;
+        }
+    }
+
+    private void cellsCreatorAdd(){
+        cell = new Cell[rows][columns];
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < columns; j++){
+                cell[i][j] = new Cell();
+                // System.out.println(Game.getGame());
+                // System.out.println("Number of available Mines ->" + Menu.getTheGame().curMineNum);
+                // cell[i][j].addActionListener(new ActionListener(){
+                //     @Override
+                //     public void actionPerformed(ActionEvent e) {
+                //         cellAction();
+                //     }
+                // });
+
+                GPanel.add(cell[i][j]);
+            }
+        }
+    }
+
+    private void setMinesPlaces(){
+        
+        Random rn = new Random();
+        
+        //  random row, random column
+        int rr, rc;
+
+        int i = 0;
+
+        while(i < numberOfMines) {
+            rr = rn.nextInt(rows);
+            rc = rn.nextInt(columns);
+
+            //  If content not mined then set content as mined
+            if(cell[rr][rc].getContent() != "mined") {
+                cell[rr][rc].setContent("mined");
+                
+                cell[rr][rc].addActionListener(new ActionListener(){
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        looserFunc();
+                    }
+                });
+
+                i++;
+            }
+        }
+    }
+
+    private void looserFunc(){
+        
+    }
+
+    private void setNonMinedCellContent(){
+
+        //  Double for (rows, columns)
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < columns; j++){
+                //  if cell is not mined
+                if(cell[i][j].getContent() != "mined") {
+
+                    //  Searching for Mines around the cell with mineSearcher 
+                    //  Adding it as cell[i][j].setContent()
+                    cell[i][j].setContent((Integer.toString(mineSearcher(i, j))));
+                    //  cells[a][k].setIcon(new ImageIcon(getClass().getResource("img/" + ak + ".png")));
+                }
+            }
+        }
+        // printskonaki();
+    }
+
+    private int mineSearcher(int i, int j){
+        int mineCount = 0;  //  Var counts Mines around
+
+        for(int r = i - 1; r < i + 2; r++){
+            for(int c = j - 1; c < j + 2; c++){
+                if(i == 0 && r == -1){
+                    r = 0;
+                }
+
+                if(j == 0 && c == -1){
+                    c = 0;
+                }
+
+                if((r > rows-1) || (c > columns-1))
+                    continue;
+
+                if(cell[r][c].getContent() == "mined"){
+                    mineCount++;
+                }
+            }
+        }
+        return mineCount;
+    }
+
+    // private void printskonaki(){
+    //     for(int i = 0; i < rows; i++){
+    //         for(int j = 0; j < columns; j++){
+    //             System.out.print(cell[i][j].getContent() + "\t ");
+    //         }
+    //         System.out.println();
+    //     }
+    // }
+
+    // static Getters/Setters
 
     private void newGame(){
         setVisible(false);
@@ -111,186 +322,39 @@ public class Game extends JFrame{
         this.columns = columns;
     }
 
-    private boolean rightCellsMarked(){
-        int f = 0;
-        for(int i = 0; i<rows; i++){
-            for(int j = 0; j<columns; j++){
-                if (cells[i][j].isFlagged()) {
-                    f++;
-                }
-            }
-        }
-        if(numberOfMines == f)
-            return true;
-        else
-            return false;
+    public static int getCurLives() {
+        return curLives;
     }
 
-    private boolean rightCellsOpened(){
-        int f = 0;
-        for(int i = 0; i<rows; i++){
-            for(int j = 0; j<columns; j++){
-                System.out.println(cells[i][j].getContent());
-                if (!cells[i][j].isFlagged() && !cells[i][j].getIsMine()) {
-                    f++;
-                    System.out.println(f);
-                }
-            }
-        }
-        System.out.println(columns + " * " + rows + " == " + f + " + " + numberOfMines);
-        System.out.println((columns * rows) == f + numberOfMines);
-        if((columns * rows) == f + numberOfMines)
-            return true;
-        else return false;
+    public static void setCurLives(int curLives) {
+        Game.curLives = curLives;
     }
 
-    private void win(){
-        new Winner().setVisible(true);
+    public static int getCurMineNum() {
+        return curMineNum;
     }
 
-    private void lose(){
-        new Loser().setVisible(true);
+    public static void setCurMineNum(int curMineNum) {
+        Game.curMineNum = curMineNum;
     }
 
-    public void gameOver(){
-        if(rightCellsMarked() || rightCellsOpened()) {
-            win();
-            System.out.println("you win");
-        }
-        else if(parseInt(lives.getText())<1) {
-            lose();
-            System.out.println("you lose");
-        }
+    public static Game getGame(){
+        return Game.game;
     }
 
-    private void setDiffVars(){
-        //  Set numbers for rows, columns and Mines for every difficulty
-        if(this.dif == "beginner") {
-            this.rows = 9;
-            this.columns = 9;
-            this.numberOfMines = 10;
-        }
-
-        else if(this.dif == "intermediate") {
-            this.rows = 16;
-            this.columns = 16;
-            this.numberOfMines = 30;
-        }
-
-        else if(this.dif == "expert") {
-            this.rows = 16;
-            this.columns = 30;
-            this.numberOfMines = 50;
-        }
+    public static void setGame(Game game){
+        Game.game = game;
     }
 
-    private void cellsInitializer(){
-        //  Initialize all cells
-        cells = new Cell[rows][columns];
-        for(int i = 0; i < rows; i++){
-            for(int j = 0; j < columns; j++){
-                cells[i][j] = new Cell();
-                gamePanel.add(cells[i][j]);
-            }
-        }
+    public static JLabel getMineNumLabel() {
+        return Game.mineNumLabel;
     }
 
-    //  Add random Mines
-    private void randomMinesPositionSetter(){
-        Random rn = new Random();
-        int r = rows + 1;
-        int c = columns + 1;
-        int rr;
-        int rc;
-        int i = 0;
-        while(i<numberOfMines) {
-            rr = rn.nextInt(r-1);
-            rc = rn.nextInt(c-1);
-            if(cells[rr][rc].getIsMine() == false) {
-                cells[rr][rc].setIsMine(true);
-                cells[rr][rc].setContent("mined");
-                i++;
-            }
-        }
+    public static JLabel getLivesLabel() {
+        return Game.livesLabel;
     }
 
-
-    //  Set content of every non-Mine cell
-    private void contentSetterNonMineCells(){
-        int ak;
-        for(int a = 0; a < rows; a++){
-            for(int k = 0; k < columns; k++){
-                ak = 0;
-                if(cells[a][k].getIsMine() == false) {
-                    for(int s = a-1; s<a+2; s++){
-                        for(int h = k-1; h<k+2; h++){
-                            if(a==0 && s==-1){
-                                s=0;
-                            }
-                            if(k==0 && h==-1){
-                                h=0;
-                            }
-                            if(s>rows-1)
-                                continue;
-                            if(h>columns-1)
-                                continue;
-                            if(cells[s][h].getIsMine()){
-                                ak++;
-                            }
-                        }
-                    }
-                    cells[a][k].setContent((Integer.toString(ak)));
-                    //  cells[a][k].setIcon(new ImageIcon(getClass().getResource("img/" + ak + ".png")));
-                }
-            }
-        }
-    }
-
-    private void panelCreator(){
-        mainPanel = new JPanel(new BorderLayout(2,1));
-        infoPanel = new JPanel(new FlowLayout());
-        gamePanel = new JPanel(new GridLayout(rows, columns));
-    }
-
-    private void menubarCreator(){
-        JButton help = new JButton("Help");
-        JButton restart = new JButton();
-        JButton newGame = new JButton("New Game");
-
-        String smileIcon = "img/smile.png";
-
-        restart.setIcon(new ImageIcon(getClass().getResource(smileIcon)));
-        restart.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                newGame();
-            }
-        });
-
-        JMenuBar mb = new JMenuBar();
-    
-        setJMenuBar(mb);
-    
-        
-        mb.add(newGame);
-
-        newGame.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                visibleMenu();
-            }
-        });
-
-        
-        mb.add(help);
-        
-        help.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                help();
-            }
-        });
-
-        infoPanel.add(restart);
+    public static Cell[][] getCell() {
+        return Game.cell;
     }
 }

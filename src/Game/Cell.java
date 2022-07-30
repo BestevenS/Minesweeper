@@ -1,18 +1,22 @@
 package Game;
 
 import javax.swing.*;
+
+import Game.Player.Loser;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class Cell extends JButton implements ActionListener{
-    private boolean isMine, flagged;
+    private boolean flagged, open;
     private String content;
 
     public Cell(){
         this.flagged = false;
-        this.isMine = false;
+        this.open = false;
+        this.content = "0";
         imageSetter("closed");
         addActionListener(this);
         addMouseListener(new MouseAdapter() {
@@ -27,56 +31,78 @@ public class Cell extends JButton implements ActionListener{
     }
 
     private void rightMouse(){
-        this.flagged = !flagged;
-        if(this.flagged == true)
-            imageSetter("flagged");
-        else
-            imageSetter("closed");
+        if(this.open == false){
+            this.flagged = !flagged;
+            
+            if(this.flagged == true)
+                imageSetter("flagged");
+            else
+                imageSetter("closed");
+        }
     }
 
     public void imageSetter(String img){
         setIcon(new ImageIcon(getClass().getResource("img/" + img + ".png")));
     }
 
-    public boolean getIsMine() {
-        return isMine;
-    }
-
-    public void setIsMine(boolean mine) {
-        this.isMine = mine;
-    }
-
     public String getContent() {
-        return content;
+        return this.content;
     }
 
     public void setContent(String content) {
         this.content = content;
     }
 
-    public boolean isMine() {
-        return isMine;
+    public boolean getFlagged() {
+        return this.flagged;
     }
 
-    public void setMine(boolean mine) {
-        isMine = mine;
-    }
+    
+    public void cellAction(){
+        this.open = !this.open;
+        // setEnabled(false);
 
-    public boolean isFlagged() {
-        return flagged;
-    }
+        //  showing the content photo of cell
+        imageSetter(this.content);
 
-    public void setFlagged(boolean flagged) {
-        this.flagged = flagged;
+        //  if mined
+        if(this.content == "mined"){
+            Game.setCurMineNum(Game.getCurMineNum() - 1);   //  mineNum--
+
+            //  updating label of mineNum
+            Game.getMineNumLabel().setText("" + Game.getCurMineNum());
+
+            //  if lives == 0
+            if(Game.getCurLives() == 0)
+                looserFunc();
+
+            //  if lives > 0
+            if(Game.getCurLives() > 0){
+                //  lives--
+                Game.setCurLives(Game.getCurLives() - 1);
+                //  updating label of lives
+                Game.getLivesLabel().setText("" + Game.getCurLives());
+            }
+        }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        cellOpen();
+        if(!this.open && !this.flagged){
+            //  if it's closed set it as opened after click
+            cellAction();
+        }
     }
 
-    public void cellOpen(){
-        imageSetter(this.content);
-        setEnabled(false);
+    private void looserFunc(){
+        if(Game.getCurLives() == 0){
+            for(int i = 0; i < Game.getGame().getRows(); i++)
+                for(int j = 0; j < Game.getGame().getColumns(); j++){
+                    if(Game.getCell()[i][j].getContent() == "mined")
+                        Game.getCell()[i][j].imageSetter(Game.getCell()[i][j].getContent());
+                        Game.getCell()[i][j].setEnabled(false);
+                }
+        }
+        new Loser().setVisible(true);
     }
 }
