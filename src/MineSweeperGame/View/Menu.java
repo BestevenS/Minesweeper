@@ -5,10 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-import MineSweeperGame.Controller.MenuButtons.*;
-import MineSweeperGame.Controller.MenuButtons.subButtons.beginnerButton;
-import MineSweeperGame.Controller.MenuButtons.subButtons.expertButton;
-import MineSweeperGame.Controller.MenuButtons.subButtons.intermediateButton;
+import MineSweeperGame.Controller.MenuButtons.subButtons.*;
 
 public class Menu extends JFrame {
     public Menu(){
@@ -23,12 +20,12 @@ public class Menu extends JFrame {
     }
     
     private void initComponents(){
-        creatorMethod();
-        addMethod();
+        creator();
+        adder();
     }
 
 
-    private void creatorMethod(){
+    private void creator(){
 
         mainPanel = new JPanel();
 
@@ -41,7 +38,7 @@ public class Menu extends JFrame {
         buttonActions();
     }
 
-    private void addMethod(){
+    private void adder(){
         mainPanel.add(difficulties);
         mainPanel.add(beginner);
         mainPanel.add(intermediate);
