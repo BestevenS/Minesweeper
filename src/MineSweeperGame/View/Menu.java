@@ -1,11 +1,10 @@
 package MineSweeperGame.View;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 import javax.swing.*;
 
-import MineSweeperGame.Controller.MenuButtons.subButtons.*;
+import MineSweeperGame.Model.Menu.MenuButtons.subButtons.*;
 
 public class Menu extends JFrame {
     public Menu(){

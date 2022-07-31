@@ -1,14 +1,19 @@
-package MineSweeperGame.Model.GameFrameModel.GameFramePanels;
+package MineSweeperGame.Model.GameFrameModel.Panels;
+
+import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
 
 public class MainPanel extends JPanel {
 
+    private String dif;
+
     private GamePanel gPanel;
 
     private InfoPanel iPanel;
 
-    public MainPanel(){
+    public MainPanel(String dif){
+        this.dif = dif;
         initCompo();
     }
 
@@ -19,11 +24,11 @@ public class MainPanel extends JPanel {
 
     private void creator(){
         gPanel = new GamePanel();
-        iPanel = new InfoPanel();
+        iPanel = new InfoPanel(dif);
     }
 
     private void adder(){
-        add(gPanel);
-        add(iPanel);
+        add(gPanel, BorderLayout.NORTH);
+        add(iPanel, BorderLayout.SOUTH);
     }
 }

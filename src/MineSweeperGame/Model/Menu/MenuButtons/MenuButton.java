@@ -1,4 +1,4 @@
-package MineSweeperGame.Controller.MenuButtons;
+package MineSweeperGame.Model.Menu.MenuButtons;
 
 import java.awt.event.*;
 import javax.swing.*;

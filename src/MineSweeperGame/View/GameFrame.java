@@ -2,33 +2,33 @@ package MineSweeperGame.View;
 
 import java.awt.event.*;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JMenuBar;
+import javax.swing.*;
 
-import MineSweeperGame.Model.GameFrameModel.GameFramePanels.MainPanel;
+import MineSweeperGame.Model.GameFrameModel.Panels.MainPanel;
 
 public class GameFrame extends JFrame {
 
-    // private String dif;
+    private String dif;
+    
     private JMenuBar mb;
 
     private MainPanel mainPanel;
 
     public GameFrame(String dif){
-        // this.dif = dif;
+        
+        this.dif = dif;
+
         setTitle("Minesweeper - " + dif);
 
         initCompo();
 
-        setResizable(false);
+        // setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         pack();
     }
 
     private void initCompo(){
         creator();
-
         adder();
     }
 
@@ -37,15 +37,19 @@ public class GameFrame extends JFrame {
 
         mbContent();
 
-        mainPanel = new MainPanel();
+        mainPanel = new MainPanel(dif);
     }
 
     private void adder(){
-        add(mb);
+        setJMenuBar(mb);
+
         add(mainPanel);
     }
 
+
+    //  MenuBar Content
     private void mbContent(){
+
         JButton newGame = new JButton("New Game");
         newGame.addActionListener(new ActionListener() {
             @Override
@@ -62,5 +66,9 @@ public class GameFrame extends JFrame {
                 System.out.println("helpButtonPressed");
             }
         });
+
+        mb.add(newGame);
+        mb.add(help);
+
     }
 }
