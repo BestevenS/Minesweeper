@@ -4,6 +4,7 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+import MineSweeperGame.Model.Cell;
 import MineSweeperGame.Model.GameFrameModel.Panels.MainPanel;
 
 public class GameFrame extends JFrame {
@@ -14,9 +15,17 @@ public class GameFrame extends JFrame {
 
     private MainPanel mainPanel;
 
-    public GameFrame(String dif){
+    private Cell[][] cell;
+
+    private int numberOfMines;
+
+    public GameFrame(String dif, Cell[][] cell, int numberOfMines){
         
         this.dif = dif;
+        
+        this.cell = cell;
+
+        this.numberOfMines = numberOfMines;
 
         setTitle("Minesweeper - " + dif);
 
@@ -37,7 +46,13 @@ public class GameFrame extends JFrame {
 
         mbContent();
 
-        mainPanel = new MainPanel(dif);
+        mainPanel = new MainPanel(dif, cell, numberOfMines);
+        mainPanel.getRestartButton().addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                setVisible(false);
+            }
+        });
     }
 
     private void adder(){

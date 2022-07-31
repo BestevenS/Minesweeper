@@ -1,8 +1,11 @@
 package MineSweeperGame.Model.GameFrameModel.Panels;
 
-import java.awt.BorderLayout;
+import java.awt.*;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
+
+import MineSweeperGame.Model.Cell;
 
 public class MainPanel extends JPanel {
 
@@ -12,23 +15,44 @@ public class MainPanel extends JPanel {
 
     private InfoPanel iPanel;
 
-    public MainPanel(String dif){
+    private Cell[][] cell;
+
+    private int numberOfMines;
+
+    public MainPanel(String dif, Cell[][] cell, int numberOfMines){
+
+        this.cell = cell;
+
         this.dif = dif;
+
+        this.numberOfMines = numberOfMines;
+
         initCompo();
+
     }
 
     private void initCompo(){
+
         creator();
         adder();
+
     }
 
     private void creator(){
-        gPanel = new GamePanel();
+
+        gPanel = new GamePanel(cell, numberOfMines);
         iPanel = new InfoPanel(dif);
+
     }
 
     private void adder(){
-        add(gPanel, BorderLayout.NORTH);
-        add(iPanel, BorderLayout.SOUTH);
+
+        add(iPanel, BorderLayout.NORTH);
+        add(gPanel, BorderLayout.SOUTH);
+
+    }
+
+    public JButton getRestartButton(){
+        return iPanel.getRestartB();
     }
 }

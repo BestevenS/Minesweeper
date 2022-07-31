@@ -36,19 +36,23 @@ public class Cell extends JButton {
     public int cellAction(){
 
         //  if its open stop
-        if(this.open == true)
+        if(this.open == true){
+            System.out.println("opened...");
             return 1;
+        }
 
         //  if its flagged stop
-        if(this.flagged == true)
+        if(this.flagged == true){
+            System.out.println("flagged");
             return 1;
-
+        }
 
         //  if its closed and not flagged set open = true
         this.open = !this.open;
 
         //  showing the content photo of cell
         imageSetter(this.content);
+        System.out.println(content);
         
         return 0;
     }

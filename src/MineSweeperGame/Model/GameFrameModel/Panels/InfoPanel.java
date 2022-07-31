@@ -23,5 +23,17 @@ public class InfoPanel extends JPanel {
 
     private void initCompo(){
         restartB = new RestartB(dif);
+        timerL = new JLabel("0");
+        minesL = new JLabel("10");
+        livesL = new JLabel("2");
+
+        add(timerL);
+        add(restartB);
+        add(minesL);
+        add(livesL);
+    }
+
+    public RestartB getRestartB() {
+        return restartB;
     }
 }

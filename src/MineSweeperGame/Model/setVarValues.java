@@ -2,8 +2,6 @@ package MineSweeperGame.Model;
 
 public class setVarValues {
 
-    private Cell[][] cell;
-
     private int rows, columns, numberOfMines;
 
     public setVarValues(String dif){
