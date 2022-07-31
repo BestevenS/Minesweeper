@@ -1,6 +1,7 @@
 *.class
 *.odt
-.idea/*
+.idea/
 *iml
-out/*
+out/
 bin/
+.vscode
