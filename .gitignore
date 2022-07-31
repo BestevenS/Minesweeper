@@ -1,0 +1,5 @@
+*.class
+*.odt
+.idea/*
+*iml
+out/*
