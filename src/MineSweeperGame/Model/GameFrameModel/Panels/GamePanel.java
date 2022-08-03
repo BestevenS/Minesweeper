@@ -122,4 +122,8 @@ public class GamePanel extends JPanel {
             }
         }
     }
+
+    public Cell[][] getCell() {
+        return cell;
+    }
 }

@@ -86,4 +86,8 @@ public class GameFrame extends JFrame {
         mb.add(help);
 
     }
+
+    public MainPanel getMainPanel() {
+        return mainPanel;
+    }
 }

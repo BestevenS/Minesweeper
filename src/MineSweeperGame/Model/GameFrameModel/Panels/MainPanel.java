@@ -55,4 +55,12 @@ public class MainPanel extends JPanel {
     public JButton getRestartButton(){
         return iPanel.getRestartB();
     }
+
+    public InfoPanel getInfoPanel(){
+        return this.iPanel;
+    }
+
+    public GamePanel getgPanel() {
+        return gPanel;
+    }
 }

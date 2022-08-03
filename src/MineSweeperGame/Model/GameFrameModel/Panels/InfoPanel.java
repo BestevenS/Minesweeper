@@ -35,4 +35,31 @@ public class InfoPanel extends JPanel {
     public RestartB getRestartB() {
         return restartB;
     }
+
+
+    //  Getters/Setters
+
+    // public JLabel getTimerL() {
+    //     return timerL;
+    // }
+
+    // public void setTimerL(JLabel timerL) {
+    //     this.timerL = timerL;
+    // }
+
+    public JLabel getMinesL() {
+        return minesL;
+    }
+
+    public void setMinesL(int x) {
+        minesL.setText("" + x);
+    }
+
+    public JLabel getLivesL() {
+        return livesL;
+    }
+
+    public void setLivesL(int x) {
+        livesL.setText("" + x);
+    }
 }
