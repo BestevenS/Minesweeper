@@ -27,7 +27,7 @@ public class Controller {
         this.cell = new Cell[rows][columns];
 
         gameFrame = new GameFrame(dif, cell, numberOfMines);
-        gameFrame.setMinimumSize(new Dimension(100 * varValues.getColumns(), 100 * varValues.getRows()));
+        gameFrame.setMinimumSize(new Dimension(60 * varValues.getColumns(), 60 * varValues.getRows()));
         gameFrame.setVisible(true);
 
     }

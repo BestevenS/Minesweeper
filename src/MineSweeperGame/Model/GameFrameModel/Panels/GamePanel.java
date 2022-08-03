@@ -3,7 +3,6 @@ package MineSweeperGame.Model.GameFrameModel.Panels;
 import javax.swing.JPanel;
 
 import java.awt.*;
-import java.awt.event.*;
 import java.util.Random;
 
 import MineSweeperGame.Model.Cell;
@@ -21,6 +20,8 @@ public class GamePanel extends JPanel {
         this.rows = cell.length;
 
         this.columns = cell[0].length;
+
+        this.numberOfMines = numberOfMines;
 
         setLayout(new GridLayout(rows, columns));
 
@@ -60,8 +61,6 @@ public class GamePanel extends JPanel {
 
                 cell[rr][rc].setContent("mined");
 
-                cell[rr][rc].imageSetter("mined");
-
                 i++;
             }
         }
@@ -80,10 +79,10 @@ public class GamePanel extends JPanel {
                     cell[i][j].setContent((Integer.toString(mineSearcher(i, j))));
                     // cell[i][j].imageSetter(cell[i][j].getContent());
                     // cells[a][k].setIcon(new ImageIcon(getClass().getResource("img/" + ak + ".png")));
+
                 }
             }
         }
-        // printskonaki();
     }
 
     private int mineSearcher(int i, int j){
@@ -112,15 +111,12 @@ public class GamePanel extends JPanel {
             }
 
         }
-
         return mineCount;
-
     }
 
     private void createCells(){
         for(int i = 0; i < cell.length; i++){
             for(int j = 0; j < cell[0].length; j++){
-                System.out.println(i + " " + j);
                 cell[i][j] = new Cell();
                 add(cell[i][j]);
             }
