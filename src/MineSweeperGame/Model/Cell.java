@@ -50,11 +50,14 @@ public class Cell extends JButton {
         //  if its closed and not flagged set open = true
         this.open = !this.open;
 
+        System.out.println("cellAction cell");
+
         //  showing the content photo of cell
         imageSetter(this.content);
         System.out.println(content);
         
         return 0;
+        
     }
 
     private void rightMouse(){
@@ -98,4 +101,5 @@ public class Cell extends JButton {
         this.content = content;
     }
     
+
 }

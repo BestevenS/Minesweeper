@@ -17,15 +17,17 @@ public class GameFrame extends JFrame {
 
     private Cell[][] cell;
 
-    private int numberOfMines;
+    private int numberOfMines, lives;
 
-    public GameFrame(String dif, Cell[][] cell, int numberOfMines){
+    public GameFrame(String dif, Cell[][] cell, int numberOfMines, int lives){
         
         this.dif = dif;
         
         this.cell = cell;
 
         this.numberOfMines = numberOfMines;
+
+        this.lives = lives;
 
         setTitle("Minesweeper - " + dif);
 
@@ -46,7 +48,7 @@ public class GameFrame extends JFrame {
 
         mbContent();
 
-        mainPanel = new MainPanel(dif, cell, numberOfMines);
+        mainPanel = new MainPanel(dif, cell, numberOfMines, lives);
         mainPanel.getRestartButton().addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){

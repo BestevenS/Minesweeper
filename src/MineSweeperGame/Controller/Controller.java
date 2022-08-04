@@ -24,43 +24,57 @@ public class Controller {
         this.rows = varValues.getRows();
         this.columns = varValues.getColumns();
         this.availableMines = this.numberOfMines = varValues.getNumberOfMines();
+
+        // createEmptyCellArray();
+
+        this.cell = new Cell[rows][columns];
+
+        gameFrame = new GameFrame(dif, cell, numberOfMines, lives);
+
+        this.cell = gameFrame.getMainPanel().getgPanel().getCell();
         
         cellActionAdder();
 
-        gameFrame = new GameFrame(dif, cell, numberOfMines);
         gameFrame.setMinimumSize(new Dimension(60 * varValues.getColumns(), 60 * varValues.getRows()));
         gameFrame.setVisible(true);
 
-        this.cell = gameFrame.getMainPanel().getgPanel().getCell();
+    }
+
+    private void cellAction(){
+        System.out.println("cellAction controller");
+        this.availableMines = gameFrame.getMainPanel().getgPanel().getNumberOfMines();
+        gameFrame.getMainPanel().getInfoPanel().setMinesL(availableMines);
+        
+        this.lives = gameFrame.getMainPanel().getgPanel().getLives();
+        gameFrame.getMainPanel().getInfoPanel().setLivesL(lives);
 
     }
 
-    private int i, j;
-
     private void cellActionAdder(){
-        for(i = 0; i < rows; i++){
-            for(j = 0; i < columns; j++){
+
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < columns; j++){
+                // cell[i][j] = gameFrame.getMainPanel().getgPanel().getCell()[i][j];
+
                 cell[i][j].addActionListener(new ActionListener(){
                     @Override
                     public void actionPerformed(ActionEvent e){
                         cellAction();
                     }
                 });
-            }
-        }
-    }
-
-    private void cellAction(){
-        if(availableMines > 0 && lives > 0){
-            if(cell[i][j].getContent() == "mined"){
-
-                availableMines--;
-                gameFrame.getMainPanel().getInfoPanel().setMinesL(availableMines);
-                
-                lives--;
-                gameFrame.getMainPanel().getInfoPanel().setLivesL(lives);
 
             }
         }
+
     }
+
+
+    // private void createEmptyCellArray(){
+    //     for(int i = 0; i < rows; i++){
+    //         for(int j = 0; j < columns; j++){
+    //             cell[i][j] = new Cell();
+    //             System.out.println(cell.length);
+    //         }
+    //     }
+    // }
 }

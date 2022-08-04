@@ -3,6 +3,7 @@ package MineSweeperGame.Model.GameFrameModel.Panels;
 import javax.swing.JPanel;
 
 import java.awt.*;
+import java.awt.event.*;
 import java.util.Random;
 
 import MineSweeperGame.Model.Cell;
@@ -11,18 +12,19 @@ public class GamePanel extends JPanel {
 
     private Cell[][] cell;
 
-    private int rows, columns, numberOfMines;
+    private int rows, columns, numberOfMines, lives;
 
-    public GamePanel(Cell[][] cell, int numberOfMines){
-        
+    public GamePanel(Cell[][] cell, int numberOfMines, int lives){
+    
         this.cell = cell;
-
+        
         this.rows = cell.length;
 
         this.columns = cell[0].length;
 
         this.numberOfMines = numberOfMines;
 
+        this.lives = lives;
         setLayout(new GridLayout(rows, columns));
 
         initCompo();
@@ -61,8 +63,22 @@ public class GamePanel extends JPanel {
 
                 cell[rr][rc].setContent("mined");
 
+                cell[rr][rc].addActionListener(new ActionListener(){
+                    @Override
+                    public void actionPerformed(ActionEvent e){
+                        minedCellAction();
+                    }
+                });
                 i++;
             }
+        }
+    }
+
+    private void minedCellAction(){
+        System.out.println("cellAction GamePanel");
+        if(numberOfMines > 0 && lives > 0){
+            numberOfMines--;
+            lives--;
         }
     }
 
@@ -123,7 +139,16 @@ public class GamePanel extends JPanel {
         }
     }
 
+    //  Getters
     public Cell[][] getCell() {
-        return cell;
+        return this.cell;
+    }
+
+    public int getNumberOfMines() {
+        return numberOfMines;
+    }
+
+    public int getLives() {
+        return lives;
     }
 }

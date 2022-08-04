@@ -17,15 +17,17 @@ public class MainPanel extends JPanel {
 
     private Cell[][] cell;
 
-    private int numberOfMines;
+    private int numberOfMines, lives;
 
-    public MainPanel(String dif, Cell[][] cell, int numberOfMines){
+    public MainPanel(String dif, Cell[][] cell, int numberOfMines, int lives){
 
         this.cell = cell;
 
         this.dif = dif;
 
         this.numberOfMines = numberOfMines;
+
+        this.lives = lives;
 
         initCompo();
 
@@ -40,7 +42,7 @@ public class MainPanel extends JPanel {
 
     private void creator(){
 
-        gPanel = new GamePanel(cell, numberOfMines);
+        gPanel = new GamePanel(cell, numberOfMines, lives);
         iPanel = new InfoPanel(dif);
 
     }
