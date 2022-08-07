@@ -8,13 +8,18 @@ import MineSweeperGame.Model.GameFrameModel.RestartB;
 public class InfoPanel extends JPanel {
 
     private String dif;
+    private int numberOfMines, lives;
     private RestartB restartB;
 
     private JLabel timerL, minesL, livesL;
 
-    public InfoPanel(String dif){
+    public InfoPanel(String dif, int numberOfMines, int lives){
 
         this.dif = dif;
+
+        this.numberOfMines = numberOfMines;
+
+        this.lives = lives;
         
         initCompo();
     
@@ -23,8 +28,8 @@ public class InfoPanel extends JPanel {
     private void initCompo(){
         restartB = new RestartB(dif);
         timerL = new JLabel("0");
-        minesL = new JLabel("10");
-        livesL = new JLabel("2");
+        minesL = new JLabel("" + numberOfMines);
+        livesL = new JLabel("" + lives);
 
         add(timerL);
         add(restartB);

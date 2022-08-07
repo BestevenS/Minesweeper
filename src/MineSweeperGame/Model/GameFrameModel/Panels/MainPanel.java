@@ -43,7 +43,7 @@ public class MainPanel extends JPanel {
     private void creator(){
 
         gPanel = new GamePanel(cell, numberOfMines, lives);
-        iPanel = new InfoPanel(dif);
+        iPanel = new InfoPanel(dif, numberOfMines, lives);
 
     }
 

@@ -2,23 +2,26 @@ package MineSweeperGame.Model;
 
 public class setVarValues {
 
-    private int rows, columns, numberOfMines;
+    private int rows, columns, numberOfMines, lives;
 
     public setVarValues(String dif){
         if(dif == "Beginner"){
             this.rows = 9;
             this.columns = 9;
             this.numberOfMines = 10;
+            this.lives = 3;
         }
-        else if(dif == "Beginner"){
+        else if(dif == "intermediate"){
             this.rows = 16;
             this.columns = 16;
             this.numberOfMines = 30;
+            this.lives = 2;
         }
         else {  //  expert button option
             this.rows = 16;
             this.columns = 30;
             this.numberOfMines = 50;
+            this.lives = 1;
         }
     }
 
@@ -46,5 +49,9 @@ public class setVarValues {
 
     public void setNumberOfMines(int numberOfMines) {
         this.numberOfMines = numberOfMines;
+    }
+
+    public int getLives() {
+        return lives;
     }
 }

@@ -3,8 +3,6 @@ package MineSweeperGame.Model.GameFrameModel.Panels;
 import javax.swing.JPanel;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.util.Random;
 
 import MineSweeperGame.Model.Cell;
 
@@ -34,55 +32,11 @@ public class GamePanel extends JPanel {
     private void initCompo(){
         
         createCells();
-        indexContent();
         
     }
+    
 
-    private void indexContent(){
-
-        setMinesPlaces();
-        setNonMinedCellContent();
-        
-    }
-
-    private void setMinesPlaces(){
-        
-        Random rn = new Random();
-        
-        //  random row, random column
-        
-        int i = 0;
-
-        while(i < numberOfMines) {
-            int rr, rc;
-            rr = rn.nextInt(rows);
-            rc = rn.nextInt(columns);
-
-            //  If content not mined then set content as mined
-            if(cell[rr][rc].getContent() != "mined") {
-
-                cell[rr][rc].setContent("mined");
-
-                cell[rr][rc].addActionListener(new ActionListener(){
-                    @Override
-                    public void actionPerformed(ActionEvent e){
-                        minedCellAction();
-                    }
-                });
-                i++;
-            }
-        }
-    }
-
-    private void minedCellAction(){
-        System.out.println("cellAction GamePanel");
-        if(numberOfMines > 0 && lives > 0){
-            numberOfMines--;
-            lives--;
-        }
-    }
-
-    private void setNonMinedCellContent(){
+    public void setNonMinedCellContent(){
 
         //  Double for (rows, columns)
         for(int i = 0; i < rows; i++){

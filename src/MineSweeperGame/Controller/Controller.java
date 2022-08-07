@@ -1,6 +1,7 @@
 package MineSweeperGame.Controller;
 
 import java.awt.event.*;
+import java.util.Random;
 import java.awt.Dimension;
 
 import MineSweeperGame.Model.Cell;
@@ -14,7 +15,7 @@ public class Controller {
 
     private Cell[][] cell;
 
-    private int rows, columns, numberOfMines, availableMines, lives = 2;
+    private int rows, columns, numberOfMines, availableMines, lives;
 
     public Controller(String dif){
         // this.dif = dif;
@@ -24,6 +25,7 @@ public class Controller {
         this.rows = varValues.getRows();
         this.columns = varValues.getColumns();
         this.availableMines = this.numberOfMines = varValues.getNumberOfMines();
+        this.lives = varValues.getLives();
 
         // createEmptyCellArray();
 
@@ -32,49 +34,80 @@ public class Controller {
         gameFrame = new GameFrame(dif, cell, numberOfMines, lives);
 
         this.cell = gameFrame.getMainPanel().getgPanel().getCell();
+
+        indexCellContent();
         
-        cellActionAdder();
+        // cellActionAdder();
 
         gameFrame.setMinimumSize(new Dimension(60 * varValues.getColumns(), 60 * varValues.getRows()));
         gameFrame.setVisible(true);
 
     }
 
-    private void cellAction(){
-        System.out.println("cellAction controller");
-        this.availableMines = gameFrame.getMainPanel().getgPanel().getNumberOfMines();
-        gameFrame.getMainPanel().getInfoPanel().setMinesL(availableMines);
-        
-        this.lives = gameFrame.getMainPanel().getgPanel().getLives();
-        gameFrame.getMainPanel().getInfoPanel().setLivesL(lives);
+    private void indexCellContent(){
 
+        setMinesPlaces();
+        gameFrame.getMainPanel().getgPanel().setNonMinedCellContent();
+            
     }
 
-    private void cellActionAdder(){
+    private void setMinesPlaces(){
+        
+        Random rn = new Random();
+        
+        //  random row, random column
+        
+        int i = 0;
 
-        for(int i = 0; i < rows; i++){
-            for(int j = 0; j < columns; j++){
-                // cell[i][j] = gameFrame.getMainPanel().getgPanel().getCell()[i][j];
+        while(i < numberOfMines) {
+            int rr, rc;
+            rr = rn.nextInt(rows);
+            rc = rn.nextInt(columns);
 
-                cell[i][j].addActionListener(new ActionListener(){
+            //  If content not mined then set content as mined
+            if(cell[rr][rc].getContent() != "mined") {
+
+                cell[rr][rc].setContent("mined");
+
+                cell[rr][rc].addActionListener(new ActionListener(){
                     @Override
                     public void actionPerformed(ActionEvent e){
-                        cellAction();
+                        minedCellAction();
                     }
                 });
-
+                i++;
             }
         }
-
     }
 
+    private void minedCellAction(){
+        if(availableMines > 0 && lives > 0){
 
-    // private void createEmptyCellArray(){
+            --availableMines;
+            --lives;
+            
+            gameFrame.getMainPanel().getInfoPanel().setMinesL(availableMines);
+            
+            gameFrame.getMainPanel().getInfoPanel().setLivesL(lives);
+
+        }        
+    }
+
+    // private void cellActionAdder(){
+
     //     for(int i = 0; i < rows; i++){
     //         for(int j = 0; j < columns; j++){
-    //             cell[i][j] = new Cell();
-    //             System.out.println(cell.length);
+    //             // cell[i][j] = gameFrame.getMainPanel().getgPanel().getCell()[i][j];
+
+    //             cell[i][j].addActionListener(new ActionListener(){
+    //                 @Override
+    //                 public void actionPerformed(ActionEvent e){
+    //                     cellAction();
+    //                 }
+    //             });
+
     //         }
     //     }
+
     // }
 }
