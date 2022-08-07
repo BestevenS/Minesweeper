@@ -38,6 +38,8 @@ public class GamePanel extends JPanel {
 
     public void setNonMinedCellContent(){
 
+        int x = 0;
+
         //  Double for (rows, columns)
         for(int i = 0; i < rows; i++){
             for(int j = 0; j < columns; j++){
@@ -46,7 +48,11 @@ public class GamePanel extends JPanel {
 
                     // Searching for Mines around the cell with mineSearcher 
                     // Adding it as cell[i][j].setContent()
-                    cell[i][j].setContent((Integer.toString(mineSearcher(i, j))));
+
+                    x = mineSearcher(i, j);
+
+                    cell[i][j].setContent((Integer.toString(x)));
+                    
                     // cell[i][j].imageSetter(cell[i][j].getContent());
                     // cells[a][k].setIcon(new ImageIcon(getClass().getResource("img/" + ak + ".png")));
 

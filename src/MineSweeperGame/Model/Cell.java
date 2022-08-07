@@ -1,6 +1,8 @@
 package MineSweeperGame.Model;
 
 import javax.swing.*;
+
+import java.awt.Insets;
 import java.awt.event.*;
 
 public class Cell extends JButton {
@@ -10,6 +12,7 @@ public class Cell extends JButton {
     private String content;
 
     public Cell(){
+        setMargin(new Insets(0,0,0,0));
         this.flagged = false;
         this.open = false;
         this.content = "0";
@@ -37,26 +40,21 @@ public class Cell extends JButton {
 
         //  if its open stop
         if(this.open == true){
-            System.out.println("opened...");
-            return 1;
+            return 0;
         }
 
         //  if its flagged stop
         if(this.flagged == true){
-            System.out.println("flagged");
-            return 1;
+            return 0;
         }
 
         //  if its closed and not flagged set open = true
         this.open = !this.open;
 
-        System.out.println("cellAction cell");
-
         //  showing the content photo of cell
         imageSetter(this.content);
-        System.out.println(content);
         
-        return 0;
+        return 1;
         
     }
 
@@ -100,6 +98,5 @@ public class Cell extends JButton {
     public void setContent(String content) {
         this.content = content;
     }
-    
 
 }

@@ -11,7 +11,7 @@ public class setVarValues {
             this.numberOfMines = 10;
             this.lives = 3;
         }
-        else if(dif == "intermediate"){
+        else if(dif == "Intermediate"){
             this.rows = 16;
             this.columns = 16;
             this.numberOfMines = 30;
