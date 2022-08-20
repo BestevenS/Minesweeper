@@ -3,22 +3,23 @@ package MineSweeperGame.Model.GameFrameModel.Panels;
 import javax.swing.JPanel;
 
 import java.awt.*;
+import java.util.Random;
 
 import MineSweeperGame.Model.Cell;
 
 public class GamePanel extends JPanel {
 
-    private Cell[][] cell;
+    private Cell[][] cells;
 
     private int rows, columns, numberOfMines, lives;
 
-    public GamePanel(Cell[][] cell, int numberOfMines, int lives){
+    public GamePanel(Cell[][] cells, int numberOfMines, int lives){
     
-        this.cell = cell;
+        this.cells = cells;
         
-        this.rows = cell.length;
+        this.rows = cells.length;
 
-        this.columns = cell[0].length;
+        this.columns = cells[0].length;
 
         this.numberOfMines = numberOfMines;
 
@@ -32,9 +33,41 @@ public class GamePanel extends JPanel {
     private void initCompo(){
         
         createCells();
+        indexCellContent();
         
     }
+
+    //  About Cells
     
+    private void indexCellContent(){
+
+        setMinesPlaces();
+        setNonMinedCellContent();
+            
+    }
+
+    private void setMinesPlaces(){
+        
+        Random rn = new Random();
+        
+        //  random row, random column
+        
+        int i = 0;
+
+        while(i < numberOfMines) {
+            int rr, rc;
+            rr = rn.nextInt(rows);
+            rc = rn.nextInt(columns);
+
+            //  If content not mined then set content as mined
+            if(cells[rr][rc].getContent() != "mined") {
+
+                cells[rr][rc].setContent("mined");
+
+                i++;
+            }
+        }
+    }
 
     public void setNonMinedCellContent(){
 
@@ -44,14 +77,14 @@ public class GamePanel extends JPanel {
         for(int i = 0; i < rows; i++){
             for(int j = 0; j < columns; j++){
                 //  if cell is not mined
-                if(cell[i][j].getContent() != "mined") {
+                if(cells[i][j].getContent() != "mined") {
 
                     // Searching for Mines around the cell with mineSearcher 
                     // Adding it as cell[i][j].setContent()
 
                     x = mineSearcher(i, j);
 
-                    cell[i][j].setContent((Integer.toString(x)));
+                    cells[i][j].setContent((Integer.toString(x)));
                     
                     // cell[i][j].imageSetter(cell[i][j].getContent());
                     // cells[a][k].setIcon(new ImageIcon(getClass().getResource("img/" + ak + ".png")));
@@ -80,28 +113,29 @@ public class GamePanel extends JPanel {
                 if((r > rows-1) || (c > columns-1))
                     continue;
 
-                if(cell[r][c].getContent() == "mined"){
+                if(cells[r][c].getContent() == "mined"){
                     mineCount++;
                 }
 
             }
 
         }
+
         return mineCount;
     }
 
     private void createCells(){
-        for(int i = 0; i < cell.length; i++){
-            for(int j = 0; j < cell[0].length; j++){
-                cell[i][j] = new Cell();
-                add(cell[i][j]);
+        for(int i = 0; i < cells.length; i++){
+            for(int j = 0; j < cells[0].length; j++){
+                cells[i][j] = new Cell();
+                add(cells[i][j]);
             }
         }
     }
 
     //  Getters
     public Cell[][] getCell() {
-        return this.cell;
+        return this.cells;
     }
 
     public int getNumberOfMines() {
