@@ -3,7 +3,6 @@ package MineSweeperGame.Model.GameFrameModel.Panels;
 import javax.swing.JPanel;
 
 import java.awt.*;
-import java.awt.event.*;
 import java.util.Random;
 
 import MineSweeperGame.Controller.Controller;
