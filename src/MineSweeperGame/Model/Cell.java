@@ -2,6 +2,10 @@ package MineSweeperGame.Model;
 
 import javax.swing.*;
 
+import MineSweeperGame.Controller.Controller;
+import MineSweeperGame.Model.GameOverDialogs.Loser;
+import MineSweeperGame.Model.GameOverDialogs.Winner;
+
 import java.awt.Insets;
 import java.awt.event.*;
 
@@ -11,7 +15,12 @@ public class Cell extends JButton {
 
     private String content;
 
-    public Cell(){
+    private Controller controller;
+
+    public Cell(Controller controller){
+
+        this.controller = controller;
+
         setMargin(new Insets(0,0,0,0));
         this.flagged = false;
         this.open = false;
@@ -53,6 +62,39 @@ public class Cell extends JButton {
 
         //  showing the content photo of cell
         imageSetter(this.content);
+
+        if(this.content == "mined"){
+            if(controller.getAvailableMines() > 0 && controller.getLives() > 0){
+
+                controller.setAvailableMines(controller.getAvailableMines() - 1);
+
+                controller.setLives(controller.getLives() - 1);
+                
+                controller.getGameFrame().getMainPanel().
+                    getInfoPanel().setMinesL(controller.getAvailableMines());
+                
+                controller.getGameFrame().getMainPanel().
+                    getInfoPanel().setLivesL(controller.getLives());
+    
+            }
+    
+            else if(controller.getLives() == 0){
+                controller.getGameFrame().getMainPanel().getGPanel().setEnabled(false);
+                new Loser().setVisible(true);
+            }
+        }
+        else{
+            controller.setRightCellClicked(controller.getRightCellClicked() + 1);
+            System.out.println(controller.getRightCellClicked());
+
+            if(controller.getRightCellClicked() == (
+                (controller.getRows() * controller.getColumns())
+                 - controller.getNumberOfMines())){
+
+                new Winner().setVisible(true);
+
+            }
+        }
         
         return 1;
         

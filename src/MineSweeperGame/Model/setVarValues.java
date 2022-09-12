@@ -1,57 +1,28 @@
 package MineSweeperGame.Model;
 
+import MineSweeperGame.Controller.Controller;
+
 public class setVarValues {
-
-    private int rows, columns, numberOfMines, lives;
-
-    public setVarValues(String dif){
-        if(dif == "Beginner"){
-            this.rows = 9;
-            this.columns = 9;
-            this.numberOfMines = 10;
-            this.lives = 3;
+    public setVarValues(Controller controller){
+        if(controller.getDif() == "Beginner"){
+            controller.setRows(9);
+            controller.setColumns(9);
+            controller.setNumberOfMines(10);
+            controller.setLives(3);
         }
-        else if(dif == "Intermediate"){
-            this.rows = 16;
-            this.columns = 16;
-            this.numberOfMines = 30;
-            this.lives = 2;
+        else if(controller.getDif() == "Intermediate"){
+            controller.setRows(16);
+            controller.setColumns(16);
+            controller.setNumberOfMines(30);
+            controller.setLives(2);
         }
         else {  //  expert button option
-            this.rows = 16;
-            this.columns = 30;
-            this.numberOfMines = 50;
-            this.lives = 1;
+            controller.setRows(16);
+            controller.setColumns(30);
+            controller.setNumberOfMines(50);
+            controller.setLives(1);
         }
-    }
 
-    // Getters/Setters
-
-    public int getRows() {
-        return this.rows;
-    }
-
-    public void setRows(int rows) {
-        this.rows = rows;
-    }
-
-    public int getColumns() {
-        return this.columns;
-    }
-
-    public void setColumns(int columns) {
-        this.columns = columns;
-    }
-
-    public int getNumberOfMines() {
-        return this.numberOfMines;
-    }
-
-    public void setNumberOfMines(int numberOfMines) {
-        this.numberOfMines = numberOfMines;
-    }
-
-    public int getLives() {
-        return lives;
+        controller.setAvailableMines(controller.getNumberOfMines());
     }
 }

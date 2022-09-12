@@ -4,32 +4,22 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-import MineSweeperGame.Model.Cell;
+import MineSweeperGame.Controller.Controller;
 import MineSweeperGame.Model.GameFrameModel.Panels.MainPanel;
 
 public class GameFrame extends JFrame {
-
-    private String dif;
     
     private JMenuBar mb;
 
     private MainPanel mainPanel;
 
-    private Cell[][] cell;
+    private Controller controller;
 
-    private int numberOfMines, lives;
-
-    public GameFrame(String dif, Cell[][] cell, int numberOfMines, int lives){
+    public GameFrame(Controller controller){
         
-        this.dif = dif;
-        
-        this.cell = cell;
+        this.controller = controller;
 
-        this.numberOfMines = numberOfMines;
-
-        this.lives = lives;
-
-        setTitle("Minesweeper - " + dif);
+        setTitle("Minesweeper - " + controller.getDif());
 
         initCompo();
 
@@ -48,7 +38,7 @@ public class GameFrame extends JFrame {
 
         mbContent();
 
-        mainPanel = new MainPanel(dif, cell, numberOfMines, lives);
+        mainPanel = new MainPanel(controller);
         mainPanel.getRestartButton().addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){

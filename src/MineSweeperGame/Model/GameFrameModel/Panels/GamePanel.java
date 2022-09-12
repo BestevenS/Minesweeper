@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import java.awt.*;
 import java.util.Random;
 
+import MineSweeperGame.Controller.Controller;
 import MineSweeperGame.Model.Cell;
 
 public class GamePanel extends JPanel {
@@ -13,17 +14,22 @@ public class GamePanel extends JPanel {
 
     private int rows, columns, numberOfMines, lives;
 
-    public GamePanel(Cell[][] cells, int numberOfMines, int lives){
+    private Controller controller;
+
+    public GamePanel(Controller controller){
     
-        this.cells = cells;
+        this.controller = controller;
+
+        this.cells = controller.getCells();
         
-        this.rows = cells.length;
+        this.rows = controller.getRows();
 
-        this.columns = cells[0].length;
+        this.columns = controller.getColumns();
 
-        this.numberOfMines = numberOfMines;
+        this.numberOfMines = controller.getNumberOfMines();
 
-        this.lives = lives;
+        this.lives = controller.getLives();
+
         setLayout(new GridLayout(rows, columns));
 
         initCompo();
@@ -65,6 +71,7 @@ public class GamePanel extends JPanel {
                 cells[rr][rc].setContent("mined");
 
                 i++;
+                
             }
         }
     }
@@ -127,7 +134,7 @@ public class GamePanel extends JPanel {
     private void createCells(){
         for(int i = 0; i < cells.length; i++){
             for(int j = 0; j < cells[0].length; j++){
-                cells[i][j] = new Cell();
+                cells[i][j] = new Cell(controller);
                 add(cells[i][j]);
             }
         }

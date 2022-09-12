@@ -5,29 +5,19 @@ import java.awt.*;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import MineSweeperGame.Model.Cell;
+import MineSweeperGame.Controller.Controller;
 
 public class MainPanel extends JPanel {
-
-    private String dif;
 
     private GamePanel gPanel;
 
     private InfoPanel iPanel;
 
-    private Cell[][] cell;
+    private Controller controller;
 
-    private int numberOfMines, lives;
+    public MainPanel(Controller controller){
 
-    public MainPanel(String dif, Cell[][] cell, int numberOfMines, int lives){
-
-        this.cell = cell;
-
-        this.dif = dif;
-
-        this.numberOfMines = numberOfMines;
-
-        this.lives = lives;
+        this. controller = controller;
 
         initCompo();
 
@@ -42,8 +32,13 @@ public class MainPanel extends JPanel {
 
     private void creator(){
 
-        gPanel = new GamePanel(cell, numberOfMines, lives);
-        iPanel = new InfoPanel(dif, numberOfMines, lives);
+        gPanel = new GamePanel(controller);
+
+        iPanel = new InfoPanel(
+            controller.getDif(), 
+            controller.getNumberOfMines(), 
+            controller.getLives()
+        );
 
     }
 
@@ -62,7 +57,7 @@ public class MainPanel extends JPanel {
         return this.iPanel;
     }
 
-    public GamePanel getgPanel() {
+    public GamePanel getGPanel() {
         return gPanel;
     }
 }
