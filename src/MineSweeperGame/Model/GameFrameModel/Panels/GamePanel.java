@@ -3,6 +3,7 @@ package MineSweeperGame.Model.GameFrameModel.Panels;
 import javax.swing.JPanel;
 
 import java.awt.*;
+import java.awt.event.*;
 import java.util.Random;
 
 import MineSweeperGame.Controller.Controller;
@@ -109,32 +110,32 @@ public class GamePanel extends JPanel {
 
             for(int c = j - 1; c < j + 2; c++){
 
-                if(i == 0 && r == -1){
+                if(i == 0 && r == -1)
                     r = 0;
-                }
+                
 
-                if(j == 0 && c == -1){
+                if(j == 0 && c == -1)
                     c = 0;
-                }
+                
 
                 if((r > rows-1) || (c > columns-1))
                     continue;
 
-                if(cells[r][c].getContent() == "mined"){
+                if(cells[r][c].getContent() == "mined")
                     mineCount++;
-                }
 
             }
 
         }
 
         return mineCount;
+        
     }
 
     private void createCells(){
         for(int i = 0; i < cells.length; i++){
             for(int j = 0; j < cells[0].length; j++){
-                cells[i][j] = new Cell(controller);
+                cells[i][j] = new Cell(controller, i, j);
                 add(cells[i][j]);
             }
         }

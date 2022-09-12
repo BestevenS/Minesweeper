@@ -16,9 +16,13 @@ public class Cell extends JButton {
 
     private Controller controller;
 
-    public Cell(Controller controller){
+    private int i, j;
+
+    public Cell(Controller controller, int i, int j){
 
         this.controller = controller;
+        this.i = i;
+        this.j = j;
 
         setMargin(new Insets(0,0,0,0));
         this.flagged = false;
@@ -83,6 +87,10 @@ public class Cell extends JButton {
             }
         }
         else{
+            if(this.content.equals("0")){
+                System.out.println("if 0");
+                set0CellAction();
+            }
             controller.setRightCellClicked(controller.getRightCellClicked() + 1);
             System.out.println(controller.getRightCellClicked());
 
@@ -140,6 +148,23 @@ public class Cell extends JButton {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    private void set0CellAction(){
+        for(int r = i - 1; r < i + 2; r++){
+            for(int c = j - 1; c < j + 2; c++){
+                if(i == 0 && r == -1)
+                    r = 0;
+                
+                if(j == 0 && c == -1)
+                    c = 0;
+                
+                if((r > controller.getRows()-1) || (c > controller.getColumns()-1))
+                    continue;
+
+                controller.getCells()[r][c].cellAction();
+            }
+        }
     }
 
 }
