@@ -71,7 +71,7 @@ public class GamePanel extends JPanel {
                 cells[rr][rc].setContent("mined");
 
                 i++;
-                
+
             }
         }
     }

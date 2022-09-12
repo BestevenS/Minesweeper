@@ -1,19 +1,15 @@
 package MineSweeperGame.Controller;
 
-import java.awt.event.*;
 import java.awt.Dimension;
 
 import MineSweeperGame.Model.Cell;
 import MineSweeperGame.Model.setVarValues;
-import MineSweeperGame.Model.GameOverDialogs.*;
 import MineSweeperGame.View.GameFrame;
 
 public class Controller {
 
     // private String dif;
     private GameFrame gameFrame;
-
-    //  TODO: change array cell to arraylist
 
     private Cell[][] cells;
 
@@ -27,13 +23,9 @@ public class Controller {
 
         new setVarValues(this);
 
-        // createEmptyCellArray();
-
         this.cells = new Cell[rows][columns];
 
         gameFrame = new GameFrame(this);
-
-        // this.cells = gameFrame.getMainPanel().getgPanel().getCell();
 
         gameFrame.setSize(new Dimension(40 * columns, 52 * rows));
         gameFrame.setVisible(true);

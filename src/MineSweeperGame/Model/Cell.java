@@ -3,8 +3,7 @@ package MineSweeperGame.Model;
 import javax.swing.*;
 
 import MineSweeperGame.Controller.Controller;
-import MineSweeperGame.Model.GameOverDialogs.Loser;
-import MineSweeperGame.Model.GameOverDialogs.Winner;
+import MineSweeperGame.Model.GameOverDialogs.*;
 
 import java.awt.Insets;
 import java.awt.event.*;
@@ -88,8 +87,10 @@ public class Cell extends JButton {
             System.out.println(controller.getRightCellClicked());
 
             if(controller.getRightCellClicked() == (
-                (controller.getRows() * controller.getColumns())
-                 - controller.getNumberOfMines())){
+                    (controller.getRows() * controller.getColumns()) 
+                    - controller.getNumberOfMines()
+                )
+            ){
 
                 new Winner().setVisible(true);
 
